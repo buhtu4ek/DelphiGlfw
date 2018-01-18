@@ -29,14 +29,27 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. }
 interface
 
 uses
+{$IFDEF FPC}
   {$IF Defined(MSWINDOWS)}
   Winapi.Windows,
   {$ELSEIF Defined(MACOS) and not Defined(IOS)}
   Macapi.CocoaTypes,
+  {$ELSEIF Defined(DARWIN)}  
   {$ELSE}
     {$MESSAGE Error 'Unsupported platform'}
   {$ENDIF}
   System.SysUtils;
+{$ELSE}
+  {$IF Defined(MSWINDOWS)}
+  Windows,
+  {$ELSEIF Defined(MACOS) and not Defined(IOS)}
+  CocoaTypes,
+  {$ELSEIF Defined(DARWIN)}
+  {$ELSE}
+    {$MESSAGE Error 'Unsupported platform'}
+  {$ENDIF}
+  SysUtils;
+{$ENDIF}
 
 const
   {$IF Defined(WIN32)}
@@ -54,6 +67,14 @@ const
   GLFW3_LIB = 'libglfw.3.2.dylib';
   { @exclude }
   _PU = '_';
+  {$ELSEIF Defined(DARWIN)}
+  { @exclude }
+  GLFW3_LIB = 'libglfw.3.2.dylib';
+  {$IFDEF FPC}
+  {$LINKLIB libglfw.3.2.dylib }
+  {$ENDIF}
+  { @exclude }
+  _PU = '';
   {$ELSE}
     {$MESSAGE Error 'Unsupported platform'}
   {$ENDIF}
