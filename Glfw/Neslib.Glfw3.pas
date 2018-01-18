@@ -70,11 +70,11 @@ const
   {$ELSEIF Defined(DARWIN)}
   { @exclude }
   GLFW3_LIB = 'libglfw.3.2.dylib';
-  {$IFDEF FPC}
-  {$LINKLIB libglfw.3.2.dylib }
-  {$ENDIF}
   { @exclude }
   _PU = '';
+  {$IFDEF FPC}
+    {$LINKLIB libglfw.3.2.dylib }
+  {$ENDIF}
   {$ELSE}
     {$MESSAGE Error 'Unsupported platform'}
   {$ENDIF}
